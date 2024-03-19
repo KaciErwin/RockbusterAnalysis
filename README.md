@@ -27,7 +27,7 @@ The dataset's structure and content are further explained in the accompanying [D
 
 ## **Deliverables**
 The project deliverables include:
-+ SQL Query Files: A collection of SQL queries used to extract and analyze data from the provided dataset.
++ [SQL Query Files](SQL_Queries): A collection of SQL queries used to extract and analyze data from the provided dataset.
 + [Tableau Storyboard](https://public.tableau.com/views/Movies_17092256967050/Story1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link): A Tableau storyboard presenting the visualized data and findings.
 
 This repository demonstrates a spectrum of skills in data analysis, SQL querying, and data visualization, highlighting a comprehensive approach to transforming complex data into actionable business insights. 
