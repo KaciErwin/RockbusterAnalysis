@@ -1,0 +1,130 @@
+/* 
+   Query to Calculate Revenue for Each Movie
+   This query selects the title of each movie and calculates the total revenue 
+   generated from payments associated with each movie rental.
+*/
+SELECT 
+    D.title,
+    SUM(A.amount) AS total_revenue
+FROM 
+    payment A
+    INNER JOIN rental B ON A.rental_id = B.rental_id
+    INNER JOIN inventory C ON B.inventory_id = C.inventory_id
+    INNER JOIN film D ON C.film_id = D.film_id
+GROUP BY 
+    D.title
+ORDER BY 
+    total_revenue DESC;
+
+/* 
+   Query to Find Genre for Top Movies
+   This query fetches the genre of the top movies based on a predefined list of titles.
+*/
+SELECT 
+    A.title,
+    C.name AS genre
+FROM 
+    film A
+    INNER JOIN film_category B ON A.film_id = B.film_id
+    INNER JOIN category C ON B.category_id = C.category_id
+WHERE 
+    A.title IN ('Dogma Family', 'Torque Bound', 'Harry Idaho', 'Titans Jerk', 'Saturday Lambs', 'Hustler Party', 'Innocent Usual', 'Wife Turn', 'Zorro Ark', 'Telegraph Voyage');
+
+/* 
+   Query to Calculate Rental Duration Averages
+   This query calculates the average rental duration for each movie and compares it to the overall average.
+*/
+WITH rental_length_cte AS (
+    SELECT 
+        D.title,
+        DATE_PART('day', B.return_date - B.rental_date) AS rental_length
+    FROM 
+        rental B
+        INNER JOIN inventory C ON B.inventory_id = C.inventory_id
+        INNER JOIN film D ON C.film_id = D.film_id
+    WHERE 
+        B.rental_date IS NOT NULL AND B.return_date IS NOT NULL
+)
+SELECT 
+    title,
+    rental_length,
+    ROUND(AVG(rental_length) OVER (PARTITION BY title)) AS movie_rental_avg,
+    ROUND(AVG(rental_length) OVER ()) AS total_rental_avg
+FROM 
+    rental_length_cte
+ORDER BY 
+    movie_rental_avg DESC, title;
+
+/* 
+   Query to Count Customers Per Country
+   This query counts the number of customers residing in each country.
+*/
+SELECT 
+    E.country,
+    COUNT(B.customer_id) AS customer_count
+FROM 
+    customer B
+    INNER JOIN address C ON B.address_id = C.address_id
+    INNER JOIN city D ON C.city_id = D.city_id
+    INNER JOIN country E ON D.country_id = E.country_id
+GROUP BY 
+    E.country
+ORDER BY 
+    customer_count DESC;
+
+/* 
+   Query to Count Customers Per City
+   Similar to the previous query, but counts customers on a city-level within each country.
+*/
+SELECT 
+    E.country,
+    D.city,
+    COUNT(B.customer_id) AS customer_count
+FROM 
+    customer B
+    INNER JOIN address C ON B.address_id = C.address_id
+    INNER JOIN city D ON C.city_id = D.city_id
+    INNER JOIN country E ON D.country_id = E.country_id
+GROUP BY 
+    E.country, D.city
+ORDER BY 
+    customer_count DESC;
+
+/* Queries to Create Tables Not Used in Visualizations */
+
+/* 
+   Query to Find Revenue Per Country/City
+   This query calculates the total revenue generated in each city within each country.
+*/
+SELECT 
+    E.country,
+    D.city,
+    ROUND(SUM(A.amount)) AS city_revenue
+FROM 
+    payment A
+    INNER JOIN staff B ON A.staff_id = B.staff_id
+    INNER JOIN address C ON B.address_id = C.address_id
+    INNER JOIN city D ON C.city_id = D.city_id
+    INNER JOIN country E ON D.country_id = E.country_id
+GROUP BY 
+    E.country, D.city
+ORDER BY 
+    city_revenue DESC;
+
+/* 
+   Query to Find Top 10 Countries by Customer Count
+   This query identifies the top 10 countries with the highest number of customers.
+*/
+SELECT 
+    E.country,
+    COUNT(B.customer_id) AS customer_count
+FROM 
+    customer B
+    INNER JOIN address C ON B.address_id = C.address_id
+    INNER JOIN city D ON C.city_id = D.city_id
+    INNER JOIN country E ON D.country_id = E.country_id
+GROUP BY 
+    E.country
+ORDER BY 
+    customer_count DESC
+LIMIT 10;
