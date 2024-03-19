@@ -23,7 +23,7 @@ To access and explore the data, you can download the TAR file from the following
 
 *Please note that you will need software capable of extracting TAR files to access the data. 
 
-The dataset's structure and content are further explained in the accompanying [Data Dictionary](Link to Data Dictionary)
+The dataset's structure and content are further explained in the accompanying [Data Dictionary](Rockbuster Data Dictionary.pdf)
 
 ## **Deliverables**
 The project deliverables include:
