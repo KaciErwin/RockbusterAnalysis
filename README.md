@@ -19,7 +19,7 @@ The dataset provided by Rockbuster Stealth LLC includes:
 +	Sales Data: Historical sales figures categorized by geographic regions.
 
 To access and explore the data, you can download the TAR file from the following link:
-+	[Rockbuster Complete Dataset](Link to the TAR file)
++	[Rockbuster Complete Dataset](https://github.com/KaciErwin/RockbusterAnalysis/files/14644815/dvdrental.zip)
 
 *Please note that you will need software capable of extracting TAR files to access the data. 
 
